@@ -1,4 +1,18 @@
-import {BadRequestException, Body, Controller, Delete, Get, Header, HttpCode, Param, Post, Query} from "@nestjs/common";
+import {
+    BadRequestException,
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Header,
+    HttpCode,
+    Param,
+    Post,
+    Query,
+    Req, Res
+} from "@nestjs/common";
+import {MascotaCreateDto} from "./dto/mascota.create-dto";
+import {validate, ValidationError} from "class-validator";
 
 @Controller('juegos-http') //Esto es un segmento de la URL
                                 // http://localhost:3001/juegos-http
@@ -49,11 +63,47 @@ export class HttpJuegoController{
 
     }
     @Post('parametros-cuerpo')
-    parametrosCuerpo(
+    @HttpCode(200)
+    async parametrosCuerpo(
         @Body() parametrosDeCuerpo
     ){
+        //Promesas
+        const mascotaValida = new MascotaCreateDto();
+        mascotaValida.casada = parametrosDeCuerpo.casada;
+        mascotaValida.edad = parametrosDeCuerpo.edad;
+        mascotaValida.ligada = parametrosDeCuerpo.ligada;
+        mascotaValida.nombre = parametrosDeCuerpo.nombre;
+        mascotaValida.peso = parametrosDeCuerpo.peso;
+        try{
+            const existenErrores: ValidationError[] = await validate(mascotaValida);
+            if(existenErrores.length > 0){
+                console.error('Errores:',existenErrores);
+                throw new BadRequestException('Error validando.');
+            }else{
+                return {
+                    mensaje: 'Se creo correctamente'
+                }
+            }
+        }catch (e){
+            console.error('Error',e);
+            throw new BadRequestException('Error validando.');
+        }
         console.log('Parametros de cuerpo', parametrosDeCuerpo);
         return 'Registro Creado';
     }
-
+    @Get('guardarCookieInsegura')
+    guardarCookieInsegura(
+        @Query() parametrosConsulta,
+        @Req() req,
+        @Res() res
+    ){
+        res.cookie(
+            'galletaInsegura', //nombre
+            'Tengo hambre' //valor
+        );
+        res.send({ //Método EXPRESSJS
+            mensaje: 'ok'
+        })
+        //NO se puede usar return cuando se usa @Res()!!!!!!!!!!!!!!!!!!
+    }
 }
