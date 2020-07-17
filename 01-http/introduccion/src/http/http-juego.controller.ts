@@ -9,7 +9,8 @@ import {
     Param,
     Post,
     Query,
-    Req, Res
+    Req, Res,
+    Headers
 } from "@nestjs/common";
 import {MascotaCreateDto} from "./dto/mascota.create-dto";
 import {validate, ValidationError} from "class-validator";
@@ -94,8 +95,8 @@ export class HttpJuegoController{
     @Get('guardarCookieInsegura')
     guardarCookieInsegura(
         @Query() parametrosConsulta,
-        @Req() req,
-        @Res() res
+        @Req() req, //Request
+        @Res() res //Response
     ){
         res.cookie(
             'galletaInsegura', //nombre
@@ -106,4 +107,44 @@ export class HttpJuegoController{
         })
         //NO se puede usar return cuando se usa @Res()!!!!!!!!!!!!!!!!!!
     }
+    @Get('guardarCookieSegura')
+    guardarCookieSegura(
+        @Req() req, //Request
+        @Res() res //Response
+    ){
+        res.cookie(
+            'galletaSegura', //nombre
+            'Ya no tengo hambre.', //valor
+            {
+                secure : true
+            }
+        );
+        res.send({ //Método EXPRESSJS
+            mensaje: 'ok'
+        })
+        //NO se puede usar return cuando se usa @Res()!!!!!!!!!!!!!!!!!!
+    }
+    @Get('mostrarCookies')
+    mostrarCookies(
+        @Req() req //Si no usamos 'res', sí podemos usar el return.
+    ){
+        const mensaje = {
+            sinFirmar: req.cookies,
+            firmadas: req.signedCookies
+        }
+        return mensaje;
+    }
+    @Get('guardarCookieFirmada')
+    guardarCookieFirmada(
+        @Res() res,
+    @Headers() headers //-> Cabecera de petición
+    ){
+        //res.headers -> Cabecera de respuesta
+        res.cookie('firmada','poliburguer',{signed:true});
+        const mensaje = {
+            mensaje : 'ok'
+        };
+        res.send(mensaje)
+    }
+
 }
