@@ -6,7 +6,7 @@ async function bootstrap() {
     Antes del método listen() ya que este inicia el servidor.
    */
   const app = await NestFactory.create(AppModule);
-  app.use(cookieParser())
+  app.use(cookieParser('Me gustan las poliburguers'))
   await app.listen(3001);
 }
 bootstrap();
