@@ -27,8 +27,14 @@ export class HtttpCalculadoraController{
             'Usuario',
             parametrosConsulta.usuario
         )
+        res.cookie(
+            'Puntaje',
+            100,
+            {signed: true}
+        )
         res.send({
-            mensaje: 'ok'
+            'Usuario': parametrosConsulta.usuario,
+            'Puntaje': 100
         })
     }
     //http://localhost:3001/calc-http/calcular?numero1=10&numero2=20
@@ -36,7 +42,8 @@ export class HtttpCalculadoraController{
     @HttpCode(200)
     parametrosconsulta(
         @Query() parametrosDeConsulta,
-        @Req() req
+        @Req() req,
+        @Res() res
     ){
         if(req.cookies['Usuario']) {
             var num1 = parametrosDeConsulta.numero1;
@@ -44,12 +51,29 @@ export class HtttpCalculadoraController{
             if (isNaN(num1) || isNaN(num2)) {
                 throw new BadRequestException('No son números.');
             } else {
-                return Number(num1) + Number(num2);
+                var current = Number(req.signedCookies['Puntaje']);
+                var calc =  Number(num1) + Number(num2);
+                var resp ={
+                   'Usuario:':req.cookies['Usuario'],
+                    'Operación:':'Suma',
+                    'Respuesta:':calc,
+                   'Puntaje Inicial:':req.signedCookies['Puntaje'],
+                    'Puntaje Final:': current-calc
+                }
+                if(this.verify_cookie(current,calc)){
+                    res.cookie('Puntaje',100,{signed:true},{overwrite:true})
+                    resp['Aviso'] =req.cookies['Usuario']+", se te acabaron tus puntos. Se te han reestablecido de nuevo."
+                    res.send(resp)
+                }else{
+                    res.cookie('Puntaje',resp["Puntaje Final:"], {signed:true},{overwrite:true})
+                    res.send(resp)
+                }
             }
         }else{
             throw new BadRequestException('No tiene la cookie! - Dirígase hacia http://localhost:3001/calc-http/cookie?usuario=nombreusuario');
         }
     }
+
     //http://localhost:3001/calc-http/calcular/10
     //{"numero1" : 5}
     @Put('/calcular/:numero2')
@@ -57,7 +81,8 @@ export class HtttpCalculadoraController{
     async bodyParams(
         @Body() bodyParams,
         @Param() pathParams,
-        @Req() req
+        @Req() req,
+        @Res() res
     ){
         if(req.cookies['Usuario']) {
             var num1 = bodyParams.numero1;
@@ -65,7 +90,23 @@ export class HtttpCalculadoraController{
             if (isNaN(num1) || isNaN(num2)) {
                 throw new BadRequestException('No son números.');
             } else {
-                return Number(num1) - Number(num2);
+                var current = Number(req.signedCookies['Puntaje']);
+                var calc =  Number(num1) - Number(num2);
+                var resp ={
+                    'Usuario:':req.cookies['Usuario'],
+                    'Operación:':'Resta',
+                    'Respuesta:':calc,
+                    'Puntaje Inicial:':req.signedCookies['Puntaje'],
+                    'Puntaje Final:': current-Math.abs(calc)
+                }
+                if(this.verify_cookie(current,Math.abs(calc))){
+                    res.cookie('Puntaje',100,{signed:true},{overwrite:true})
+                    resp['Aviso'] =req.cookies['Usuario']+", se te acabaron tus puntos. Se te han reestablecido de nuevo."
+                    res.send(resp)
+                }else{
+                    res.cookie('Puntaje',resp["Puntaje Final:"], {signed:true},{overwrite:true})
+                    res.send(resp)
+                }
             }
         }else{
             throw new BadRequestException('No tiene la cookie! - Dirígase hacia http://localhost:3001/calc-http/cookie?usuario=nombreusuario');
@@ -78,7 +119,8 @@ export class HtttpCalculadoraController{
     cabeceras(
         @Headers() headers,
         @Query() queryparams,
-        @Req() req
+        @Req() req,
+        @Res() res
     ){
         if(req.cookies['Usuario']) {
             var num1 = headers.numero1;
@@ -86,7 +128,23 @@ export class HtttpCalculadoraController{
             if (isNaN(num1) || isNaN(num2)) {
                 throw new BadRequestException('No son números.');
             } else {
-                return Number(num1) * Number(num2);
+                var current = Number(req.signedCookies['Puntaje']);
+                var calc =  Number(num1) * Number(num2);
+                var resp ={
+                    'Usuario:':req.cookies['Usuario'],
+                    'Operación:':'Multiplicación',
+                    'Respuesta:':calc,
+                    'Puntaje Inicial:':req.signedCookies['Puntaje'],
+                    'Puntaje Final:': current-Math.abs(calc)
+                }
+                if(this.verify_cookie(current,Math.abs(calc))){
+                    res.cookie('Puntaje',100,{signed:true},{overwrite:true})
+                    resp['Aviso'] =req.cookies['Usuario']+", se te acabaron tus puntos. Se te han reestablecido de nuevo."
+                    res.send(resp)
+                }else{
+                    res.cookie('Puntaje',resp["Puntaje Final:"], {signed:true},{overwrite:true})
+                    res.send(resp)
+                }
             }
         }else{
             throw new BadRequestException('No tiene la cookie! - Dirígase hacia http://localhost:3001/calc-http/cookie?usuario=nombreusuario');
@@ -98,7 +156,8 @@ export class HtttpCalculadoraController{
     parametrosruta(
         @Param() pathparams,
         @Query() queryparams,
-        @Req() req
+        @Req() req,
+        @Res() res
     ){
         if(req.cookies['Usuario']) {
             var num1 = pathparams.numero1;
@@ -109,12 +168,34 @@ export class HtttpCalculadoraController{
                 if (num2 == 0) {
                     throw new BadRequestException('El segundo número no puede ser cero!');
                 } else {
-                    return num1 / num2;
+                    var current = Number(req.signedCookies['Puntaje']);
+                    var calc =  Number(num1) / Number(num2);
+                    var resp ={
+                        'Usuario:':req.cookies['Usuario'],
+                        'Operación:':'División',
+                        'Respuesta:':calc,
+                        'Puntaje Inicial:':req.signedCookies['Puntaje'],
+                        'Puntaje Final:': current-Math.abs(calc)
+                    }
+                    if(this.verify_cookie(current,Math.abs(calc))){
+                        res.cookie('Puntaje',100,{signed:true},{overwrite:true})
+                        resp['Aviso'] =req.cookies['Usuario']+", se te acabaron tus puntos. Se te han reestablecido de nuevo."
+                        res.send(resp)
+                    }else{
+                        res.cookie('Puntaje',resp["Puntaje Final:"], {signed:true},{overwrite:true})
+                        res.send(resp)
+                    }
                 }
             }
         }else{
             throw new BadRequestException('No tiene la cookie! - Dirígase hacia http://localhost:3001/calc-http/cookie?usuario=nombreusuario');
         }
     }
-
+   verify_cookie(current: number, next: number){
+        if(current-next<=0){
+            return true;
+        }else{
+            return false;
+        }
+   }
 }
