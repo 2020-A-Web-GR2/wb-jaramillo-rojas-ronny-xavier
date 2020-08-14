@@ -10,6 +10,8 @@ import {
     Put
 } from "@nestjs/common";
 import {UsuarioService} from "./usuario.service";
+import {UsuarioCreateDto} from "./dto/usuario.create-dto";
+import {validate, ValidationError} from "class-validator";
 
 @Controller('usuario')
 export class UsuarioController{
@@ -50,10 +52,23 @@ export class UsuarioController{
         @Body() parametrosCuerpo
     ){
         //Validacion del create DTO
-        
+        const usuarioValido = new UsuarioCreateDto();
+        usuarioValido.cedula = parametrosCuerpo.cedula;
+        usuarioValido.nombre = parametrosCuerpo.nombre;
+        usuarioValido.apellido = parametrosCuerpo.apellido;
+        usuarioValido.sueldo = parametrosCuerpo.sueldo;
+        usuarioValido.fecha_nacimiento = parametrosCuerpo.fechaNacimiento;
+        usuarioValido.fecha_hora_nacimiento = parametrosCuerpo.fechaHoraNacimiento;
         try{
-            const respuesta = await this._usuarioService.crearUno(parametrosCuerpo)
-            return respuesta
+            const existenErrores: ValidationError[] = await validate(usuarioValido);
+            if(existenErrores.length > 0){
+                console.error('Errores:',existenErrores);
+                throw new BadRequestException('Error validando.');
+            }else{
+                const respuesta = await this._usuarioService.crearUno(parametrosCuerpo)
+                return respuesta
+            }
+
         }catch (e){
             console.error(e)
             throw new BadRequestException({
@@ -98,6 +113,15 @@ export class UsuarioController{
         @Param() parametrosRuta,
         @Body() parametrosCuerpo
     ){
+        const usuarioValido = new UsuarioCreateDto();
+        usuarioValido.cedula = parametrosCuerpo.cedula;
+        usuarioValido.nombre = parametrosCuerpo.nombre;
+        usuarioValido.apellido = parametrosCuerpo.apellido;
+        usuarioValido.sueldo = parametrosCuerpo.sueldo;
+        usuarioValido.fecha_nacimiento = parametrosCuerpo.fechaNacimiento;
+        usuarioValido.fecha_hora_nacimiento = parametrosCuerpo.fechaHoraNacimiento;
+        
+
         const indice = this.arregloUsuarios.findIndex(
             (usuario) => usuario.id === Number(parametrosRuta.id)
         );
