@@ -13,6 +13,12 @@ export class UsuarioService{
 
     }
     crearUno(nuevoUsuario:UsuarioEntity){
-        return this.repositorio.save(nuevoUsuario)
+        return this.repositorio.save(nuevoUsuario) //Devuelve una promesa
+    }
+    buscarTodos(){
+        return this.repositorio.find() //Devuelve una promesa
+    }
+    buscarUno(id: number){
+        return this.repositorio.findOne(id) //Devuelve una promesa
     }
 }
