@@ -1,10 +1,10 @@
 import {Column, Entity, Index, PrimaryGeneratedColumn} from "typeorm";
-@Index([
-    'nombre',
-    'apellido',
-    'cedula',
-    'fechaNacimiento' //Nombres de las propiedades en la clase
-])
+//@Index([
+//    'nombre',
+//    'apellido',
+//    'cedula',
+//    'fechaNacimiento' //Nombres de las propiedades en la clase
+//])
 @Index(['nombre', 'apellido', 'cedula'],{unique: true}) //Índice compuesto (uniqueness en registro por cada field especificado)
 @Entity('epn_usuario')
 export class UsuarioEntity{
@@ -14,46 +14,51 @@ export class UsuarioEntity{
         name: 'id'
     })
     id: number;
+
     @Column({
         name: 'nombre',
         type: 'varchar',
-        length: '60'
+        nullable: true
     })
     nombre?: string
+
     @Column({
         name: 'apellido',
         type: 'varchar',
         nullable: true,
-        length:'60'
+        length: '60'
     })
-    apellido?:string
+    apellido?: string
+
     @Column({
         name: 'cedula',
         type: 'varchar',
         nullable: false,
         unique: true,
-        length:'18'
+        length: '18'
     })
     cedula: string;
+
     @Column({
+        name: 'sueldo',
         nullable: true,
         type: 'decimal',
-        precision: 10, // Decimales a la izquierda
-        scale: 4, // Decimales a la derecha
-        name: 'sueldo'
+        precision: 10, // 1000000000.
+        scale: 4, // .0001
     })
-    sueldo?: number
+    sueldo?: number;
+
     @Column({
         nullable: true,
-        type:'date',
+        type: 'date',
         name: 'fecha_nacimiento'
     })
-    fechaNacimiento?: number
+    fechaNacimiento?: string;
+
     @Column({
         nullable: true,
-        type:'datetime',
-        name:'fecha_hora_nacimiento'
+        type: 'datetime',
+        name: 'fecha_hora_nacimiento'
     })
-    fechaHoraNacimiento?: number
-
+    fechaHoraNacimiento?: string;
 }
