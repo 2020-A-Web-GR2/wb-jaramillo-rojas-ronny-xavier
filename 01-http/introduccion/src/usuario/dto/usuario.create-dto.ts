@@ -8,8 +8,7 @@ import {
     Length
 } from "class-validator";
 export class UsuarioCreateDto{
-    @Length(10,10)
-    @IsNumber()
+    @Length(0,10)
     @IsNotEmpty()
     cedula: string;
     @IsNotEmpty()
@@ -22,10 +21,10 @@ export class UsuarioCreateDto{
     @IsNotEmpty()
     @IsPositive()
     sueldo: number
-    @IsDate()
-    @IsNotEmpty()
+    //@IsDateString()
+    //@IsNotEmpty()
     fecha_nacimiento: Date
-    @IsDateString()
-    @IsNotEmpty()
+    //@IsDateString()
+    //@IsNotEmpty()
     fecha_hora_nacimiento: string
 }

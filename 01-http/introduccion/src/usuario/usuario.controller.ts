@@ -109,7 +109,7 @@ export class UsuarioController{
        // return this.arregloUsuarios[indice];
     }
     @Put(':id')
-    editarUno(
+    async editarUno(
         @Param() parametrosRuta,
         @Body() parametrosCuerpo
     ){
@@ -121,22 +121,54 @@ export class UsuarioController{
         usuarioValido.fecha_nacimiento = parametrosCuerpo.fechaNacimiento;
         usuarioValido.fecha_hora_nacimiento = parametrosCuerpo.fechaHoraNacimiento;
         
+        const id = Number(parametrosRuta.id);
+        const usuarioEditado = parametrosCuerpo;
+        usuarioEditado.id = id;
 
-        const indice = this.arregloUsuarios.findIndex(
-            (usuario) => usuario.id === Number(parametrosRuta.id)
-        );
-        this.arregloUsuarios[indice].nombre = parametrosCuerpo.nombre
-        return this.arregloUsuarios[indice];
+        try{
+            const respuesta = await this._usuarioService.editarUno(usuarioEditado);
+            return respuesta;
+        }catch (e){
+            console.error(e)
+            throw new InternalServerErrorException({
+                mensaje:'Error del servidor'},
+            )
+        }
+       // const indice = this.arregloUsuarios.findIndex(
+       //     (usuario) => usuario.id === Number(parametrosRuta.id)
+       // );
+       // this.arregloUsuarios[indice].nombre = parametrosCuerpo.nombre
+       // return this.arregloUsuarios[indice];
     }
     @Delete(':id')
-    eliminarUno(
+    async eliminarUno(
         @Param() parametrosRuta
     ){
-        const indice = this.arregloUsuarios.findIndex(
-            (usuario) => usuario.id === Number(parametrosRuta.id)
-        );
-        this.arregloUsuarios.splice(indice, 1)
-        return this.arregloUsuarios[indice]
+        const id = Number(parametrosRuta.id);
+        try{
+            const respuesta = await this._usuarioService.eliminarUno(id);
+            if (respuesta.affected>0){
+                console.log(respuesta)
+                return{
+                    mensaje:'Registro con id '+id+' eliminado'
+                };
+            }else{
+                console.log(respuesta)
+                return{
+                    mensaje:'No se eliminó el registro especificado.'
+                };
+            }
+        }catch (e){
+            console.error(e)
+            throw new BadRequestException({
+                mensaje: 'Error validando datos'
+            });
+        }
+        //const indice = this.arregloUsuarios.findIndex(
+        //    (usuario) => usuario.id === Number(parametrosRuta.id)
+        //);
+        //this.arregloUsuarios.splice(indice, 1)
+        //return this.arregloUsuarios[indice]
     }
 
 }

@@ -21,4 +21,10 @@ export class UsuarioService{
     buscarUno(id: number){
         return this.repositorio.findOne(id) //Devuelve una promesa
     }
+    editarUno(usuarioEditado: UsuarioEntity){
+        return this.repositorio.save(usuarioEditado);
+    }
+    eliminarUno(id: number){
+        return this.repositorio.delete(id);
+    }
 }
