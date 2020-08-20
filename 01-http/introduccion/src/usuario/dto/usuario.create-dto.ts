@@ -21,10 +21,10 @@ export class UsuarioCreateDto{
     @IsNotEmpty()
     @IsPositive()
     sueldo: number
-    //@IsDateString()
-    //@IsNotEmpty()
+    @IsDateString()
+    @IsNotEmpty()
     fecha_nacimiento: Date
-    //@IsDateString()
-    //@IsNotEmpty()
+    @IsDateString()
+    @IsNotEmpty()
     fecha_hora_nacimiento: string
 }

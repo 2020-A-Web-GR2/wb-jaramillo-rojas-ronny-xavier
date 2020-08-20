@@ -120,20 +120,27 @@ export class UsuarioController{
         usuarioValido.sueldo = parametrosCuerpo.sueldo;
         usuarioValido.fecha_nacimiento = parametrosCuerpo.fechaNacimiento;
         usuarioValido.fecha_hora_nacimiento = parametrosCuerpo.fechaHoraNacimiento;
-        
-        const id = Number(parametrosRuta.id);
-        const usuarioEditado = parametrosCuerpo;
-        usuarioEditado.id = id;
 
-        try{
-            const respuesta = await this._usuarioService.editarUno(usuarioEditado);
-            return respuesta;
-        }catch (e){
-            console.error(e)
-            throw new InternalServerErrorException({
-                mensaje:'Error del servidor'},
-            )
+        const existenErrores: ValidationError[] = await validate(usuarioValido);
+        if(existenErrores.length > 0){
+            console.error('Errores:',existenErrores);
+            throw new BadRequestException('Error validando.');
+        }else {
+            const id = Number(parametrosRuta.id);
+            const usuarioEditado = parametrosCuerpo;
+            usuarioEditado.id = id;
+
+            try{
+                const respuesta = await this._usuarioService.editarUno(usuarioEditado);
+                return respuesta;
+            }catch (e){
+                console.error(e)
+                throw new InternalServerErrorException({
+                    mensaje:'Error del servidor'},
+                )
+            }
         }
+
        // const indice = this.arregloUsuarios.findIndex(
        //     (usuario) => usuario.id === Number(parametrosRuta.id)
        // );
