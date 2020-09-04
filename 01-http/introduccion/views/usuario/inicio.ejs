@@ -1,7 +1,51 @@
 <%- include ('../compartido/menu/menu-component.ejs')%>
 <%- include ('../compartido/estilos-generales/estilos-generales-component.ejs')%>
+<!-- "=" -> Inyecta el contenido directamente en el html -->
+<p> <%= "Hola" %></p>
+<p> <%= 15 %> </p>
 
-<h1>Inicio</h1>
+<!-- "<% %>" -> Permite trabajar con js -->
+<% const adrian = {nombre:"Adrian",apellido:"Eguez", cedula:"17"} %>
+<% const numero = 25 %>
+<% const mensaje = " " %>
+<p> <%= adrian %> </p> <!-- Los objetos js no se pueden mostrar directamente -->
+    <p> <%= adrian.nombre %> <%= adrian.apellido %></p>
+<p> <%= numero %> </p>
+<p> <%= mensaje %> </p>
+<% const arregloNumeros = [1,2,3,4,5] %>
+<ul>
+    <% arregloNumeros.forEach( (objeto) => {  %>
+    <li><%= objeto %></li>
+    <% }) %>
+</ul>
+
+
+<a href="/usuario/vista/crear">
+    <button>Crear</button>
+</a>
+
+<table>
+    <!--table row-->
+    <tr>
+        <!--table header-->
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Cedula</th>
+        <th>Acciones</th>
+    </tr>
+    <% arregloUsuarios.forEach( (objeto)=>{ %>
+        <tr>
+            <td><%= objeto.nombre %></td>
+            <td><%= objeto.apellido %></td>
+            <td><%= objeto.cedula %></td>
+            <td>
+                <button>Ver</button>
+                <button>Editar</button>
+                <button>Eliminar</button>
+            </td>
+        </tr>
+    <% } ) %>
+</table>
 
 
 <button onclick="mensajeAlertar()">ALERTAR</button>

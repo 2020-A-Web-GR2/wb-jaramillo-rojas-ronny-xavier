@@ -1,0 +1,30 @@
+<%- include ('../compartido/menu/menu-component.ejs')%>
+<%- include ('../compartido/estilos-generales/estilos-generales-component.ejs')%>
+
+<h1>Crear Usuario</h1>
+
+<!--
+<form action="https://www.google.com/search" method="GET">
+    <label for="query">Consulta:</label>
+    <input id="query" type="text" name="q">
+</form>
+-->
+
+<form action="/usuario/crearDesdeVista" method="POST">
+    <label for="nombreID">Nombre:</label>
+    <input id="nombreID" type="text" name="nombre">
+<br>
+    <label for="apellidoID">Apellido:</label>
+    <input id="apellidoID" type="text" name="cedula">
+<br>
+    <label for="cedulaID">Cedula:</label>
+    <input id="cedulaID" type="text" name="cedula">
+<br>
+    <button type="submit">SUBMIT</button>
+    <button type="reset">RESET</button>
+    <button type="button">BUTTON</button>
+
+</form>
+
+
+<%- include ('../compartido/funcionalidad-general/funcionalidad-general-component.ejs')%>
