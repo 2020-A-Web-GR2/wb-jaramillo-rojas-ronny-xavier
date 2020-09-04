@@ -1,5 +1,9 @@
 body {
     font-family:Arial;
-    color:green;
+    color:black;
 
+}
+
+td, th{
+    border: 1px solid #dddddd;
 }

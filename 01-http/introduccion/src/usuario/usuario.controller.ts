@@ -251,11 +251,34 @@ export class UsuarioController{
     ) {
         res.render('usuario/login') // Nombre de la vista (archivo)
     }
+    @Get('vista/crear')
+    crearUsuarioVista(
+        @Res() res
+    ){
+        res.render('usuario/crear')
+    }
     @Get('vista/inicio')
-    inicio(
+    async inicio(
         @Res() res
     ) {
-        res.render('usuario/inicio') // Nombre de la vista (archivo)
+        let resultadoEncontrado;
+        try{
+         resultadoEncontrado = await this._usuarioService.buscarTodos()
+        } catch (error){
+            throw new InternalServerErrorException('Error encontrando usuarios.')
+        }
+        if (resultadoEncontrado){
+                console.log("Promesa:")
+                console.log(resultadoEncontrado)
+                res.render(
+                'usuario/inicio',
+                {arregloUsuarios: resultadoEncontrado}
+                );
+        }else{
+            throw new NotFoundException('No se encontraron usuarios.')
+        }
     }
+
+
 
 }
