@@ -2,7 +2,9 @@
 <%- include ('../compartido/estilos-generales/estilos-generales-component.ejs')%>
 
 <h1>Crear Usuario</h1>
-
+<% if (error != undefined){%>
+    <p>MENSAJE ERROR: <%= error %></p>
+<% } %>
 <!--
 <form action="https://www.google.com/search" method="GET">
     <label for="query">Consulta:</label>
@@ -10,20 +12,24 @@
 </form>
 -->
 
-<form action="/usuario/crearDesdeVista" method="POST">
+<form action="/usuario/crearDesdeVista"
+      method="POST">
+    <% const existeNombre = typeof nombre !== 'undefined' %>
     <label for="nombreID">Nombre:</label>
-    <input id="nombreID" type="text" name="nombre">
-<br>
+    <input id="nombreID" type="text" name="nombre" value="<%= existeNombre ? nombre : '' %>">
+    <br>
+    <% const existeApellido = typeof apellido !== 'undefined' %>
     <label for="apellidoID">Apellido:</label>
-    <input id="apellidoID" type="text" name="cedula">
-<br>
+    <input id="apellidoID" type="text" name="apellido" value="<%= existeApellido ? apellido : '' %>">
+    <br>
+    <% const existeCedula = typeof cedula !== 'undefined' %>
     <label for="cedulaID">Cedula:</label>
-    <input id="cedulaID" type="text" name="cedula">
-<br>
+    <input id="cedulaID" type="text" name="cedula" value="<%= existeCedula ? cedula : '' %>">
+    <br>
     <button type="submit">SUBMIT</button>
     <button type="reset">RESET</button>
     <button type="button">BUTTON</button>
-
+    <button>QUE TIPO SOY?</button>
 </form>
 
 
