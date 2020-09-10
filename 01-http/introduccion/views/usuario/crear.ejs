@@ -1,7 +1,20 @@
 <%- include ('../compartido/menu/menu-component.ejs')%>
 <%- include ('../compartido/estilos-generales/estilos-generales-component.ejs')%>
 
-<h1>Crear Usuario</h1>
+<% const existeUsuario = typeof(usuario) != 'undefined'%>
+<% let existeNombre = typeof nombre !== 'undefined' %>
+<% let existeApellido = typeof apellido !== 'undefined' %>
+<% let existeCedula = typeof cedula !== 'undefined' %>
+<h1><%= existeUsuario ? 'Editar': 'Crear'%> Usuario</h1>
+<!--Setear nombre y apellido-->
+<% if(existeUsuario ){%>
+<% existeNombre = true %>
+<% existeApellido = true %>
+<% existeCedula = true %>
+<% nombre = usuario.nombre %>
+<% apellido = usuario.apellido %>
+<% cedula = usuario.cedula %>
+<% } %>
 <% if (error != undefined){%>
     <p>MENSAJE ERROR: <%= error %></p>
 <% } %>
@@ -12,19 +25,19 @@
 </form>
 -->
 
-<form action="/usuario/crearDesdeVista"
+<form action="<%= existeUsuario ? '/usuario/editarDesdeVista/'+usuario.id : '/usuario/crearDesdeVista/'%>"
       method="POST">
-    <% const existeNombre = typeof nombre !== 'undefined' %>
+
     <label for="nombreID">Nombre:</label>
     <input id="nombreID" type="text" name="nombre" value="<%= existeNombre ? nombre : '' %>">
     <br>
-    <% const existeApellido = typeof apellido !== 'undefined' %>
+
     <label for="apellidoID">Apellido:</label>
     <input id="apellidoID" type="text" name="apellido" value="<%= existeApellido ? apellido : '' %>">
     <br>
-    <% const existeCedula = typeof cedula !== 'undefined' %>
+
     <label for="cedulaID">Cedula:</label>
-    <input id="cedulaID" type="text" name="cedula" value="<%= existeCedula ? cedula : '' %>">
+    <input id="cedulaID" type="text"  name="cedula" value="<%= existeCedula ? cedula : '' %>"  <%= existeUsuario ? 'disabled' : ''%>>
     <br>
     <button type="submit">SUBMIT</button>
     <button type="reset">RESET</button>
