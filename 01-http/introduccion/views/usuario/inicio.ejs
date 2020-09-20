@@ -23,6 +23,13 @@
     <p>MENSAJE: <%= parametrosConsulta.mensaje %></p>
 
 <% } %>
+<form action="/usuario/vista/inicio" method="GET">
+    <label for="busqueda">Búsqueda:</label>
+    <input id="busqueda" type="text" name="busqueda">
+    <button type="submit">Buscar</button>
+</form>
+
+
 <a href="/usuario/vista/crear">
     <button>Crear</button>
 </a>
