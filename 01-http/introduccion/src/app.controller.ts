@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Post, Req, Res, Session} from '@nestjs/common';
+import {Body, Controller, Get, Post, Query, Req, Res, Session} from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -10,6 +10,47 @@ export class AppController {
     return this.appService.getHello();
   }
 
+  @Get('login')
+  login(
+      @Res() response,
+      @Query() parametrosConsulta,
+      @Session() session
+  ){
+    const estaLogeado = session.usuario;
+    if(estaLogeado){
+      return response.redirect('genero');
+    }else{
+      return response.render('genero/login',{error:parametrosConsulta.error})
+    }
+
+  }
+  @Post('login')
+  loginPost(
+      @Body() parametrosCuerpo,
+      @Res() response,
+      @Session() session
+  ){
+    const usuario = parametrosCuerpo.usuario;
+    const password = parametrosCuerpo.password;
+    if(usuario =='Adrian' && password =='1234'){
+      session.usuario = usuario;
+      return response.redirect('genero');
+    }else{
+        return response.redirect('login?error=Credenciales incorrectas!');
+    }
+
+  }
+  @Get('logout')
+  logout(
+      @Session() session,
+      @Res() response,
+      @Req() request
+  ){
+    session.username = undefined;
+    request.session.destroy();
+    return response.redirect('login')
+  }
+  /*
   @Get('login')
   login(
       @Res() response
@@ -72,5 +113,5 @@ export class AppController {
       }
 
 
-  }
+  }*/
 }
