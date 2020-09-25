@@ -42,4 +42,13 @@ export class GeneroService {
     buscarTodos(){
         return this.repositorio.find() //Devuelve una promesa
     }
+    buscarUno(id: number){
+        return this.repositorio.findOne(id) //Devuelve una promesa
+    }
+    editarUno(generoEditado: GeneroEntity){
+        return this.repositorio.save(generoEditado);
+    }
+    eliminarUno(id: number){
+        return this.repositorio.delete(id);
+    }
 }
