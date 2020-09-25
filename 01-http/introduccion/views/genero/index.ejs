@@ -1,0 +1,65 @@
+<%- include ('./head.ejs')%>
+<div class="container text-center">
+<h1><b>Examen Segundo Bimestre</b></h1>
+<h2><b>CRUD Géneros Musicales</b></h2>
+</div>
+
+<div class="container text-center">
+    <div class="row">
+        <div class="col-sm-6">
+            <form action="/genero" method="GET">
+                <label for="busquedaNombre">Búsqueda por nombre:</label>
+                <input id="busquedaNombre" type="text" name="busquedaNombre">
+                <button type="submit" class="btn btn-secondary">Buscar</button>
+            </form>
+        </div>
+        <div class="col-sm-6">
+            <form action="/genero" method="GET">
+                <label for="busquedaPais">Búsqueda por pais:</label>
+                <input id="busquedaPais" type="text" name="busquedaPais">
+                <button type="submit" class="btn btn-secondary">Buscar</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container text-center">
+    <a href="/genero/crear">
+        <button type="button" class="btn btn-success">Añadir Género</button>
+    </a>
+</div>
+
+<% if (typeof arregloGeneros === 'undefined'){ %>
+    <h1 class="text-center mt-3">No se encontraron géneros!</h1>
+<%} else{ %>
+    <% if (arregloGeneros.length === 0 ){%>
+    <h1 class="text-center mt-3">No se encontraron géneros!</h1>
+    <% } else {%>
+    <div class="container ml-5 mr-5 mt-3">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Año de Aparición</th>
+                    <th scope="col">País de Origen</th>
+                    <th scope="col">Género Derivado</th>
+                    <th scope="col">Artista Destacado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!--Inicio For-->
+                <% arregloGeneros.forEach( (objeto)=>{ %>
+                <tr>
+                    <td><%= objeto.nombre %></td>
+                    <td><%= objeto.anio %></td>
+                    <td><%= objeto.pais %></td>
+                    <td><%= objeto.derivado %></td>
+                    <td><%= objeto.artista %></td>
+                </tr>
+                <% } ) %>
+                <!--Fin for-->
+            </tbody>
+        </table>
+    </div>
+    <%}%>
+<% }%>

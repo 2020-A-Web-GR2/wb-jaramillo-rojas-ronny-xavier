@@ -1,0 +1,60 @@
+<%- include ('./head.ejs')%>
+
+<h2 class="mb-3 mt-4 text-center"><b>Crear Nuevo Género</b></h2>
+
+<% if (typeof error != 'undefined'){%>
+    <div class="alert alert-danger text-center ml-5 mr-5" role="alert">
+        <%= error %>
+    </div>
+<%}%>
+
+<div class="container">
+    <form action="crear" method="POST">
+        <div class="form-group row">
+            <label for="nombre"  class="col-sm-2 col-form-label">Nombre del Género:</label>
+        <div class="col-sm-10">
+        <input id="nombre" type="text" name="nombre" class="form-control">
+        </div>
+        </div>
+        <br>
+
+        <div class="form-group row">
+        <label for="anio" class="col-sm-2 col-form-label">Año de Aparición:</label>
+        <div class="col-sm-10">
+        <input id="anio" type="number" name="anio" class="form-control">
+        </div>
+        </div>
+        <br>
+
+        <div class="form-group row">
+        <label for="pais" class="col-sm-2 col-form-label">País de Origen:</label>
+        <div class="col-sm-10">
+        <input id="pais" type="text"  name="pais" class="form-control">
+        </div>
+        </div>
+        <br>
+
+        <div class="form-group row">
+        <label for="derivado" class="col-sm-2 col-form-label">Género Derivado:</label>
+        <div class="col-sm-10">
+        <input id="derivado" type="text"  name="derivado" class="form-control">
+        </div>
+        </div>
+        <br>
+
+        <div class="form-group row">
+        <label for="artista" class="col-sm-2 col-form-label">Artista Notorio:</label>
+        <div class="col-sm-10">
+        <input id="artista" type="text"  name="artista" class="form-control">
+        </div>
+        </div>
+        <br>
+        <div class="container text-center">
+        <button type="submit" class="btn btn-primary">Crear</button>
+        <button type="reset" class="btn btn-info">Limpiar Campos</button>
+        </div>
+    </form>
+    <div class="container text-center">
+    <a href="/genero"><button class="btn btn-danger mb-3">Regresar</button></a>
+    </div>
+</div>
