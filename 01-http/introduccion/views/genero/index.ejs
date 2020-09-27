@@ -1,0 +1,110 @@
+<%- include ('./head.ejs')%>
+<div class="container text-center">
+<h1><b>Examen Segundo Bimestre</b></h1>
+<h2><b>CRUD Géneros Musicales</b></h2>
+</div>
+
+<div class="container ">
+    <div class="row">
+        <div class="col-sm-6 text-center">
+            <form action="/genero" method="GET">
+                <label for="busquedaQuery">Búsqueda:</label>
+                <input id="busquedaQuery" type="text" name="busquedaNombre">
+                <button type="submit" class="btn btn-secondary" onclick="getChecked()">Buscar</button>
+            </form>
+        </div>
+        <div class="col-sm-6">
+            <p><b>Buscar por:</b></p>
+            <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="query" id="busquedaNombre" value="option1" checked>
+            <label class="form-check-label" for="busquedaNombre">
+                Nombre
+            </label>
+            </div>
+            <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="query" id="busquedaPais" value="option2">
+            <label class="form-check-label" for="busquedaPais">
+                Pais
+            </label>
+            </div>
+        </div>
+        <script>
+            function getChecked(){
+            var field = document.getElementById("busquedaQuery");
+            var gender = document.querySelector('input[name = "query"]:checked').id
+            field.setAttribute("name",gender);
+            }
+        </script>
+    </div>
+</div>
+
+<div class="container text-center">
+    <a href="/genero/crear">
+        <button type="button" class="btn btn-success mt-3">Añadir Género</button>
+    </a>
+    <a href="/logout">
+        <button type="button" class="btn btn-danger mt-3">Salir</button>
+    </a>
+</div>
+<div class="container float-right">
+
+</div>
+
+
+
+<% if (typeof mensaje != 'undefined'){%>
+    <div class="alert alert-info text-center ml-5 mr-5 mt-3" role="alert">
+        <%= mensaje %>
+    </div>
+<%}%>
+
+<% if (typeof error != 'undefined'){%>
+    <div class="alert alert-danger text-center ml-5 mr-5 mt-3" role="alert">
+        <%= error %>
+    </div>
+<%}%>
+
+<% if (typeof arregloGeneros === 'undefined'){ %>
+    <div class="alert alert-info text-center ml-5 mr-5 mt-3" role="alert">No se encontraron géneros!</div>
+<%} else{ %>
+    <% if (arregloGeneros.length === 0 ){%>
+        <div class="alert alert-info text-center ml-5 mr-5 mt-3" role="alert">No se encontraron géneros!</div>
+    <% } else {%>
+    <div class="container mt-3">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Año de Aparición</th>
+                    <th scope="col">País de Origen</th>
+                    <th scope="col">Género Derivado</th>
+                    <th scope="col">Artista Destacado</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!--Inicio For-->
+                <% arregloGeneros.forEach( (objeto)=>{ %>
+                <tr>
+                    <td><%= objeto.nombre %></td>
+                    <td><%= objeto.anio %></td>
+                    <td><%= objeto.pais %></td>
+                    <td><%= objeto.derivado %></td>
+                    <td><%= objeto.artista %></td>
+                    <td>
+                        <div class="row">
+                        <a href="/genero/editar/<%= objeto.id %>"><button class="btn btn-warning mr-2">Editar</button></a>
+                        <form action="/genero/eliminar/<%= objeto.id %>"
+                              method="POST">
+                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </form>
+                        </div>
+                    </td>
+                </tr>
+                <% } ) %>
+                <!--Fin for-->
+            </tbody>
+        </table>
+    </div>
+    <%}%>
+<% }%>
