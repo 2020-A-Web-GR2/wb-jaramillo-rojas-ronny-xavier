@@ -29,7 +29,6 @@ export class GeneroController {
         if(estaLogeado){
             let resultadoEncontrado;
             if(parametrosConsulta.busquedaNombre || parametrosConsulta.busquedaPais){
-                console.log("ENTRA PRIMERO")
                 try{
                     if(parametrosConsulta.busquedaNombre){
                         resultadoEncontrado = await this._generoService.buscarPorNombre(parametrosConsulta.busquedaNombre);
@@ -41,7 +40,6 @@ export class GeneroController {
                     throw new InternalServerErrorException('Error encontrando géneros.')
                 }
             }else{
-                console.log("ENTRA")
                 try{
                     resultadoEncontrado = await this._generoService.buscarTodos();
                 } catch (error){

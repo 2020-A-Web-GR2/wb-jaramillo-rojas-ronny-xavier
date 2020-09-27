@@ -2,15 +2,14 @@ import {Injectable} from "@nestjs/common";
 import {GeneroEntity} from "./genero.entity";
 import {Repository} from "typeorm";
 import {InjectRepository} from "@nestjs/typeorm";
-import {Between, FindManyOptions, In, IsNull, LessThan, Like, MoreThan, MoreThanOrEqual, Not} from "typeorm/index";
-import {UsuarioEntity} from "../usuario/usuario.entity";
+import {FindManyOptions, Like} from "typeorm/index";
+
 
 
 
 @Injectable()
 export class GeneroService {
     constructor(
-        //Inyección de Dependencias
         @InjectRepository(GeneroEntity)
         private repositorio: Repository<GeneroEntity>
     ) {
@@ -24,7 +23,7 @@ export class GeneroService {
                 }
             ]
         }
-        return this.repositorio.find(consulta) //Devuelve una promesa
+        return this.repositorio.find(consulta)
     }
     buscarPorPais(textoDeConsulta?: String) {
         const consulta: FindManyOptions<GeneroEntity> ={
@@ -34,16 +33,16 @@ export class GeneroService {
                 }
             ]
         }
-        return this.repositorio.find(consulta) //Devuelve una promesa
+        return this.repositorio.find(consulta)
     }
     crearUno(nuevoGenero:GeneroEntity){
-        return this.repositorio.save(nuevoGenero) //Devuelve una promesa
+        return this.repositorio.save(nuevoGenero)
     }
     buscarTodos(){
-        return this.repositorio.find() //Devuelve una promesa
+        return this.repositorio.find()
     }
     buscarUno(id: number){
-        return this.repositorio.findOne(id) //Devuelve una promesa
+        return this.repositorio.findOne(id)
     }
     editarUno(generoEditado: GeneroEntity){
         return this.repositorio.save(generoEditado);

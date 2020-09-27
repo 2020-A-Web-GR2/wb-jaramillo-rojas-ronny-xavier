@@ -2,7 +2,7 @@ import {
     IsAlpha,
     IsNotEmpty,
     IsNumber,
-    IsPositive,
+    IsPositive, IsString,
 } from "class-validator";
 export class GeneroUpdateDto{
     @IsNotEmpty()
@@ -10,10 +10,13 @@ export class GeneroUpdateDto{
     @IsPositive()
     anio: number
     @IsNotEmpty()
+    @IsString()
     pais_origen: string
     @IsNotEmpty()
+    @IsString()
     genero_derivado: string
     @IsNotEmpty()
+    @IsString()
     artista_notorio: string
 
 }
